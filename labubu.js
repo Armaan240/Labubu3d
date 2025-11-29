@@ -1,5 +1,7 @@
 import * as THREE from 'three';
-const scene = new THREE.Scene();c
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
@@ -7,20 +9,28 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement); 
-const geometry = new THREE.BoxGeometry(1, 1, 1); 
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
-camera.position.z = 5;
+document.body.appendChild(renderer.domElement);
+const light = new THREE.AmbientLight(0xffffff, 1);
+scene.add(light);
+const loader = new GLTFLoader();
+let labubu;
 
+loader.load('labubu.glb', (gltf) => {
+  labubu = gltf.scene;
+  labubu.scale.set(2, 2, 2);
+  labubu.position.set(0, -2, 0);
+  scene.add(labubu);
+});
+camera.position.z = 5;
 function animate() {
   requestAnimationFrame(animate);
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
 
+  if (labubu) {
+    labubu.rotation.y += 0.01;
+  }
   renderer.render(scene, camera);
 }
+
 animate();
