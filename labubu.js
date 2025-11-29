@@ -21,7 +21,7 @@ scene.add(ambientLight);
 
 const loader = new GLTFLoader();
 let labubu;
-loader.load('./labubu.glb', (gltf) => {
+loader.load('/labubu.glb', (gltf) => {
   labubu = gltf.scene;
   labubu.scale.set(5, 5, 5);
   labubu.position.set(4, -5, 8);
